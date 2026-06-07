@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLAIN — write, nothing else</title>
+
+  <!-- SEO -->
+  <meta name="description" content="PLAIN is a distraction-free writing app. No folders, no formatting, no notifications — just a blank page and the words you came to write.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://plainapp.io">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://plainapp.io">
+  <meta property="og:title" content="PLAIN — write, nothing else">
+  <meta property="og:description" content="A distraction-free writing app. No folders, no formatting, no notifications — just you and the words.">
+  <meta property="og:image" content="https://plainapp.io/og.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PLAIN — write, nothing else">
+  <meta name="twitter:description" content="A distraction-free writing app. No folders, no formatting, no notifications — just you and the words.">
+  <meta name="twitter:image" content="https://plainapp.io/og.png">
+
+  <!-- Mobile browser chrome color -->
+  <meta name="theme-color" content="#f4f1ea">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --ink: #1a1714;
+      --muted: #8a8175;
+      --accent: #d8552e;
+      --line: #ddd6c9;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Space Grotesk", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    /* ---- focus styles for keyboard nav ---- */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+    /* ---- header ---- */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 34px clamp(24px, 6vw, 80px);
+      z-index: 2;
+    }
+
+    .wordmark {
+      font-family: "Instrument Serif", serif;
+      font-size: 26px;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .wordmark .dot {
+      color: var(--accent);
+    }
+
+    nav a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    /* ---- hero ---- */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px clamp(24px, 6vw, 80px) 60px;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-family: "Instrument Serif", serif;
+      font-weight: 400;
+      font-size: clamp(54px, 11vw, 142px);
+      line-height: 0.94;
+      letter-spacing: -0.01em;
+      max-width: 12ch;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .sub {
+      margin-top: 30px;
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 40ch;
+    }
+
+    .cta {
+      margin-top: 46px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 17px 30px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), background 0.35s ease;
+    }
+
+    .cta .arrow {
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .cta:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .cta:hover .arrow {
+      transform: translateX(5px);
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---- footer ---- */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px clamp(24px, 6vw, 80px);
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      z-index: 2;
+    }
+
+    footer .links {
+      display: flex;
+      gap: 26px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    footer a:hover {
+      color: var(--ink);
+    }
+
+    /* ---- entrance animation ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.31s; }
+    .d4 { animation-delay: 0.44s; }
+    .d5 { animation-delay: 0.57s; }
+
+    @keyframes rise {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      nav { display: none; }
+      footer { flex-direction: column; gap: 14px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="wordmark reveal d1" aria-label="PLAIN — home">PLAIN<span class="dot" aria-hidden="true">.</span></a>
+    <nav aria-label="Site navigation">
+      <a href="#" class="reveal d1">Sign in</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="eyebrow reveal d2">A writing app</p>
+    <h1 class="reveal d3">Write.<br><em>Nothing</em> else.</h1>
+    <p class="sub reveal d4">No folders. No formatting. No notifications. Just a blank page and the words you came to write.</p>
+    <a href="#" class="cta reveal d5">Start writing <span class="arrow" aria-hidden="true">→</span></a>
+    <p class="note reveal d5">Free forever. No account needed.</p>
+  </main>
+
+  <footer>
+    <span class="reveal d5">© 2026 PLAIN</span>
+    <nav class="links reveal d5" aria-label="Footer links">
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
