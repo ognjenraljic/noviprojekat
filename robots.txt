@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://plainapp.io/sitemap.xml
+Sitemap: https://ognjenraljic.github.io/noviprojekat/sitemap.xml
