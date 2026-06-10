@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLAIN — write</title>
+  <title>PLAIN</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="/noviprojekat/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Space+Grotesk:wght@400&display=swap" rel="stylesheet">
   <style>
     :root {
       --paper: #f4f1ea;
       --ink: #1a1714;
-      --muted: #8a8175;
+      --muted: #b5ac9d;
       --accent: #d8552e;
-      --line: #ddd6c9;
     }
 
     *, *::before, *::after {
@@ -31,12 +30,11 @@
     body {
       background: var(--paper);
       color: var(--ink);
-      font-family: "Instrument Serif", serif;
+      font-family: "Space Grotesk", sans-serif;
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
     }
 
     body::after {
@@ -45,166 +43,110 @@
       inset: 0;
       pointer-events: none;
       opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* ---- toolbar ---- */
-    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px clamp(24px, 6vw, 80px);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      background: var(--paper);
-      z-index: 10;
-      transition: border-color 0.3s ease;
-    }
-
-    .toolbar.scrolled {
-      border-color: var(--line);
-    }
-
-    .toolbar a {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 18px;
-      letter-spacing: 0.02em;
-      color: var(--ink);
+    .home {
+      position: fixed;
+      top: 30px;
+      left: clamp(24px, 6vw, 80px);
+      font-family: "Instrument Serif", serif;
+      font-size: 22px;
       text-decoration: none;
-    }
-
-    .toolbar a .dot {
-      color: var(--accent);
-    }
-
-    .word-count {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 13px;
-      color: var(--muted);
-      letter-spacing: 0.02em;
+      color: var(--ink);
+      opacity: 0.55;
       transition: opacity 0.3s ease;
-      opacity: 0;
+      z-index: 3;
     }
 
-    .word-count.visible {
+    .home:hover {
       opacity: 1;
     }
 
-    /* ---- editor ---- */
-    .editor-wrap {
+    .home .dot {
+      color: var(--accent);
+    }
+
+    .sheet {
       flex: 1;
       display: flex;
       justify-content: center;
-      padding: clamp(40px, 6vw, 80px) clamp(24px, 6vw, 80px);
+      padding: 22vh clamp(24px, 6vw, 80px) 12vh;
     }
 
     .editor {
       width: 100%;
-      max-width: 65ch;
-      min-height: 100%;
-      font-family: "Instrument Serif", serif;
-      font-size: clamp(20px, 2.5vw, 26px);
-      line-height: 1.7;
-      color: var(--ink);
-      background: transparent;
+      max-width: 60ch;
+      outline: none;
       border: none;
-      outline: none;
-      resize: none;
+      background: transparent;
+      font-family: "Instrument Serif", serif;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.5;
+      color: var(--ink);
       caret-color: var(--accent);
+      resize: none;
     }
 
-    .editor::placeholder {
+    .editor:empty::before {
+      content: "Start writing…";
       color: var(--muted);
-      opacity: 0.6;
     }
 
-    /* ---- focus mode: hide toolbar when typing ---- */
-    body.focused .toolbar {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-    }
-
-    body.focused:hover .toolbar,
-    body.focused .toolbar:focus-within {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 3px;
-    }
-
-    .editor:focus-visible {
-      outline: none;
+    .count {
+      position: fixed;
+      bottom: 26px;
+      right: clamp(24px, 6vw, 80px);
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      z-index: 3;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
+      .home { transition: none; }
     }
   </style>
 </head>
 <body>
 
-  <header class="toolbar" id="toolbar">
-    <a href="/noviprojekat/" aria-label="PLAIN — back to home">PLAIN<span class="dot" aria-hidden="true">.</span></a>
-    <span class="word-count" id="wordCount" aria-live="polite"></span>
-  </header>
+  <a class="home" href="/noviprojekat/" aria-label="PLAIN — back to home">PLAIN<span class="dot" aria-hidden="true">.</span></a>
 
-  <div class="editor-wrap">
-    <textarea
+  <div class="sheet">
+    <div
       class="editor"
-      id="editor"
-      placeholder="Start writing…"
-      aria-label="Writing area"
-      autofocus
+      contenteditable="true"
       spellcheck="true"
-    ></textarea>
+      role="textbox"
+      aria-multiline="true"
+      aria-label="Writing area"
+    ></div>
   </div>
 
+  <div class="count" id="count" aria-live="polite">0 words</div>
+
   <script>
-    const editor = document.getElementById('editor');
-    const wordCount = document.getElementById('wordCount');
-    const body = document.body;
+    const editor = document.querySelector('.editor');
+    const count = document.getElementById('count');
 
     const saved = localStorage.getItem('plain-draft');
-    if (saved) editor.value = saved;
+    if (saved) editor.innerHTML = saved;
 
-    let saveTimer, focusTimer;
+    const update = () => {
+      const text = editor.innerText.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      count.textContent = words + (words === 1 ? ' word' : ' words');
 
-    function countWords(text) {
-      return text.trim() ? text.trim().split(/\s+/).length : 0;
-    }
-
-    function updateCount() {
-      const words = countWords(editor.value);
-      wordCount.textContent = words === 1 ? '1 word' : `${words} words`;
-      wordCount.classList.toggle('visible', words > 0);
-    }
-
-    editor.addEventListener('input', () => {
-      updateCount();
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        localStorage.setItem('plain-draft', editor.value);
+      clearTimeout(update._t);
+      update._t = setTimeout(() => {
+        localStorage.setItem('plain-draft', editor.innerHTML);
       }, 800);
-    });
+    };
 
-    editor.addEventListener('focus', () => {
-      clearTimeout(focusTimer);
-      focusTimer = setTimeout(() => body.classList.add('focused'), 2000);
-    });
-
-    editor.addEventListener('blur', () => {
-      clearTimeout(focusTimer);
-      body.classList.remove('focused');
-    });
-
-    updateCount();
+    editor.addEventListener('input', update);
+    update();
+    window.addEventListener('load', () => editor.focus());
   </script>
 
 </body>
